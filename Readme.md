@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Михаил Ладонкин](https://up.htmlacademy.ru/javascript/17/user/545193).
-* Наставник: `Неизвестно`.
+* Наставник: [Дмитрий Рябинин](https://htmlacademy.ru/profile/haschish).
 
 ---
 
