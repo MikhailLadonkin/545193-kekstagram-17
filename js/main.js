@@ -43,7 +43,7 @@ var generateData = function (count) {
   for (var i = 0; i < count; i++) {
     data.push(
         {
-          url: 'photos/' + (i+1) + '.jpg',
+          url: 'photos/' + (i + 1) + '.jpg',
           likes: getRandomInt(1, 26),
           comments: generateComments()
         }
