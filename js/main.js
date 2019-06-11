@@ -25,37 +25,29 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-var photosList = function (num) {
-  var photos = [];
-  for (var j = 1; j <= num; j++) {
-    photos.push('photos/' + [j] + '.jpg');
-  }
-  return photos;
-};
-
-var generateComments = function() {
-  var randomInt = getRandomInt(1, 26)
+var generateComments = function () {
+  var randomInt = getRandomInt(1, 26);
   var comments = [];
   for (var i = 0; i < randomInt; i++) {
     comments.push(
-      {avatar: avatarsList()},
-      {message: COMMENTS_LIST},
-      {name: NAMES_LIST}
-    )
-  };
+        {avatar: avatarsList()},
+        {message: COMMENTS_LIST},
+        {name: NAMES_LIST}
+    );
+  }
   return comments;
 };
 
-var generateData = function(count) {
+var generateData = function (count) {
   var data = [];
   for (var i = 0; i < count; i++) {
     data.push(
-      {
-        url: 'photos/' + (i+1) + '.jpg',
-        likes: getRandomInt(1, 26),
-        comments: generateComments()
-      }
-    )
+        {
+          url: 'photos/' + (i+1) + '.jpg',
+          likes: getRandomInt(1, 26),
+          comments: generateComments()
+        }
+    );
   }
   return data;
 };
