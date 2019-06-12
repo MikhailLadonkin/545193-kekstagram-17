@@ -30,9 +30,9 @@ var generateComments = function () {
   var comments = [];
   for (var i = 0; i < randomInt; i++) {
     comments.push({
-        avatar: avatarsList(),
-        message: COMMENTS_LIST,
-        name: NAMES_LIST
+      avatar: avatarsList(),
+      message: COMMENTS_LIST,
+      name: NAMES_LIST
     });
   }
   return comments;
