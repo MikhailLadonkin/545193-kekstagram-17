@@ -29,14 +29,16 @@ var generateComments = function () {
   var randomInt = getRandomInt(1, 26);
   var comments = [];
   for (var i = 0; i < randomInt; i++) {
-    comments.push(
-        {avatar: avatarsList()},
-        {message: COMMENTS_LIST},
-        {name: NAMES_LIST}
-    );
+    comments.push({
+        avatar: avatarsList(),
+        message: COMMENTS_LIST,
+        name: NAMES_LIST
+    });
   }
   return comments;
 };
+
+console.log(generateComments());
 
 var generateData = function (count) {
   var data = [];
