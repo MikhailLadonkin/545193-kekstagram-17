@@ -1,6 +1,6 @@
 'use strict';
 
-var getRandomCommentator = function(num) {
+var getRandomCommentator = function (num) {
   var randomCommentator = {};
   var COMMENTS_LIST = [
     'Всё отлично!',
@@ -17,12 +17,12 @@ var getRandomCommentator = function(num) {
   for (var i = 1; i <= num; i++) {
     avatars.push('img/avatar-' + [i] + '.svg');
   }
-  var avatar = avatars[Math.floor(Math.random()*avatars.length)];
+  var avatar = avatars[Math.floor(Math.random() * avatars.length)];
   randomCommentator.avatar = avatar;
   randomCommentator.message = randomComment;
   randomCommentator.name = randomName;
   return randomCommentator;
-}
+};
 
 // var generateComment = function () {
 //   var COMMENTS_LIST = [
@@ -77,9 +77,6 @@ var generateComments = function () {
 //   }
 //   return comments;
 // };
-
-console.log(generateComments());
-
 var generateData = function (count) {
   var data = [];
   for (var i = 0; i < count; i++) {
