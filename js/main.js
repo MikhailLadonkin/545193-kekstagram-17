@@ -38,8 +38,6 @@ var generateComments = function () {
   return comments;
 };
 
-console.log(generateComments());
-
 var generateData = function (count) {
   var data = [];
   for (var i = 0; i < count; i++) {
