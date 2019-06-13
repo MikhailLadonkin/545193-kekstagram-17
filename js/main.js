@@ -1,7 +1,5 @@
 'use strict';
 
-var getRandomCommentator = function (num) {
-  var randomCommentator = {};
   var COMMENTS_LIST = [
     'Всё отлично!',
     'В целом всё неплохо. Но не всё.',
@@ -11,14 +9,13 @@ var getRandomCommentator = function (num) {
     'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
   ];
   var NAMES_LIST = ['Sam', 'Jack', 'Clive', 'Mathew', 'Alex', 'Karl'];
+
+var getRandomCommentator = function (num) {
+  var randomCommentator = {};
   var randomComment = COMMENTS_LIST[Math.floor(Math.random() * COMMENTS_LIST.length)];
   var randomName = NAMES_LIST[Math.floor(Math.random() * NAMES_LIST.length)];
   var avatars = [];
-  for (var i = 1; i <= num; i++) {
-    avatars.push('img/avatar-' + [i] + '.svg');
-  }
-  var avatar = avatars[Math.floor(Math.random() * avatars.length)];
-  randomCommentator.avatar = avatar;
+  randomCommentator.avatar = 'img/avatar-' + getRandomInt(1, 6) + '.svg';
   randomCommentator.message = randomComment;
   randomCommentator.name = randomName;
   return randomCommentator;
