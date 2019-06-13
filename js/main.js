@@ -17,11 +17,10 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
-var getRandomCommentator = function (num) {
+var getRandomCommentator = function () {
   var randomCommentator = {};
   var randomComment = COMMENTS_LIST[Math.floor(Math.random() * COMMENTS_LIST.length)];
   var randomName = NAMES_LIST[Math.floor(Math.random() * NAMES_LIST.length)];
-  var avatars = [];
   randomCommentator.avatar = 'img/avatar-' + getRandomInt(1, 6) + '.svg';
   randomCommentator.message = randomComment;
   randomCommentator.name = randomName;
