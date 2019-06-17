@@ -160,10 +160,8 @@ var measureEffectValue = function () {
   return effectLevelValue.value;
 };
 
-// effectLevelPin.addEventListener('mouseup', measureEffectValue {
-
+// effectLevelPin.addEventListener('mouseup', function () {
 // });
 
-console.log(effectLevelPin.clientX);
 var photos = generateData(25);
 renderPhotos(photos);
