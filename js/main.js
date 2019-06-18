@@ -92,42 +92,31 @@ var closePicEditor = function () {
 
 uploadPicLabel.addEventListener('change', function () {
   openPicEditor();
+  changeOverlay();
 });
 
 closeOverlay.addEventListener('click', function () {
   closePicEditor();
 });
 
-closeOverlay.addEventListener('keydown', function () {
-  onPopupEscPress();
-});
-
-var changePicEffect = function (element, effect) {
-  element.style.filter = effect;
-};
-
-effectBar.classList.add('hidden');
-
 var changeOverlay = function () {
-  if (effectBar.classList.contains('hidden')) {
-    effectBar.classList.remove('hidden');
-  }
   var checkedEffect = effectsFieldset.querySelector('input:checked');
+  var filterValue;
   var pinLevel = document.querySelector('.effect-level__pin');
-  if (checkedEffect.value === 'none') {
-    changePicEffect(previewPic, 'none');
+  if (checkedEffect.value !== 'none') {
+    effectBar.classList.remove('hidden');
+  } else {
     effectBar.classList.add('hidden');
-  } else if (checkedEffect.value === 'chrome') {
-    changePicEffect(previewPic, 'grayscale(' + pinLevel.offsetLeft / EFFECT_LEVEL + ')');
-  } else if (checkedEffect.value === 'sepia') {
-    changePicEffect(previewPic, 'sepia(' + pinLevel.offsetLeft / EFFECT_LEVEL + ')');
-  } else if (checkedEffect.value === 'marvin') {
-    changePicEffect(previewPic, 'invert(' + pinLevel.offsetLeft + '%)');
-  } else if (checkedEffect.value === 'phobos') {
-    changePicEffect(previewPic, 'blur(' + pinLevel.offsetLeft / EFFECT_LEVEL + 'px)');
-  } else if (checkedEffect.value === 'heat') {
-    changePicEffect(previewPic, 'brightness(' + pinLevel.offsetLeft / EFFECT_LEVEL + ')');
   }
+  switch (checkedEffect.value) {
+    case 'chrome': filterValue = 'grayscale(' + pinLevel.offsetLeft / EFFECT_LEVEL + ')'; break;
+    case 'sepia': filterValue = 'sepia(' + pinLevel.offsetLeft / EFFECT_LEVEL + ')'; break;
+    case 'marvin': filterValue = 'invert(' + pinLevel.offsetLeft + '%)'; break;
+    case 'phobos': filterValue = 'blur(' + pinLevel.offsetLeft / EFFECT_LEVEL + 'px)'; break;
+    case 'heat': filterValue = 'brightness(' + pinLevel.offsetLeft / EFFECT_LEVEL + ')'; break;
+    default: filterValue = 'none';
+  }
+  previewPic.style.filter = filterValue;
 };
 
 var validateCommentLength = function () {
