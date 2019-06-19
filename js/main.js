@@ -9,9 +9,20 @@ var COMMENTS_LIST = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
 var NAMES_LIST = ['Sam', 'Jack', 'Clive', 'Mathew', 'Alex', 'Karl'];
+var EFFECT_LEVEL = 100;
+var ESC_KEYCODE = 27;
 
 var template = document.querySelector('#picture').content.querySelector('a');
 var picturesDomElement = document.querySelector('.pictures');
+var uploadPicLabel = document.querySelector('#upload-file');
+var uploadOverlay = document.querySelector('.img-upload__overlay');
+var closeOverlay = document.querySelector('.img-upload__cancel');
+var previewPic = document.querySelector('.img-upload__preview');
+var effectBar = document.querySelector('.img-upload__effect-level');
+var effectsFieldset = document.querySelector('.img-upload__effects');
+var commentField = document.querySelector('.text__description');
+var hashtagsField = document.querySelector('.text__hashtags');
+
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
@@ -63,5 +74,62 @@ var renderPhotos = function (array) {
   picturesDomElement.appendChild(fragment);
 };
 
+var onPopupEscPress = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE && document.activeElement !== commentField && document.activeElement !== hashtagsField) {
+    closePicEditor();
+  }
+};
+
+var openPicEditor = function () {
+  uploadOverlay.classList.remove('hidden');
+  document.addEventListener('keydown', onPopupEscPress);
+};
+
+var closePicEditor = function () {
+  uploadOverlay.classList.add('hidden');
+  document.removeEventListener('keydown', onPopupEscPress);
+};
+
+uploadPicLabel.addEventListener('change', function () {
+  openPicEditor();
+  changeOverlay();
+});
+
+closeOverlay.addEventListener('click', function () {
+  closePicEditor();
+});
+
+var changeOverlay = function () {
+  var checkedEffect = effectsFieldset.querySelector('input:checked');
+  var filterValue;
+  var pinLevel = document.querySelector('.effect-level__pin');
+  if (checkedEffect.value !== 'none') {
+    effectBar.classList.remove('hidden');
+  } else {
+    effectBar.classList.add('hidden');
+  }
+  switch (checkedEffect.value) {
+    case 'chrome': filterValue = 'grayscale(' + pinLevel.offsetLeft / EFFECT_LEVEL + ')'; break;
+    case 'sepia': filterValue = 'sepia(' + pinLevel.offsetLeft / EFFECT_LEVEL + ')'; break;
+    case 'marvin': filterValue = 'invert(' + pinLevel.offsetLeft + '%)'; break;
+    case 'phobos': filterValue = 'blur(' + pinLevel.offsetLeft / EFFECT_LEVEL + 'px)'; break;
+    case 'heat': filterValue = 'brightness(' + pinLevel.offsetLeft / EFFECT_LEVEL + ')'; break;
+    default: filterValue = 'none';
+  }
+  previewPic.style.filter = filterValue;
+};
+
+var validateCommentLength = function () {
+  if (commentField.value.length > 140) {
+    commentField.style.border = 'thick solid red';
+    commentField.setCustomValidity('The message is too long');
+  } else {
+    commentField.style.border = '';
+    commentField.setCustomValidity('');
+  }
+};
+
 var photos = generateData(25);
 renderPhotos(photos);
+effectsFieldset.addEventListener('change', changeOverlay);
+commentField.addEventListener('change', validateCommentLength);
