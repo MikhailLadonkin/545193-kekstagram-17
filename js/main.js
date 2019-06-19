@@ -103,10 +103,14 @@ var changeOverlay = function () {
   var checkedEffect = effectsFieldset.querySelector('input:checked');
   var filterValue;
   var pinLevel = document.querySelector('.effect-level__pin');
-  if (checkedEffect.value !== 'none') {
-    effectBar.classList.remove('hidden');
-  } else {
+  if (!checkedEffect) {
     effectBar.classList.add('hidden');
+  } else if (checkedEffect) {
+    if (checkedEffect.value !== 'none') {
+      effectBar.classList.remove('hidden');
+    } else {
+      effectBar.classList.add('hidden');
+    }
   }
   switch (checkedEffect.value) {
     case 'chrome': filterValue = 'grayscale(' + pinLevel.offsetLeft / EFFECT_LEVEL + ')'; break;
