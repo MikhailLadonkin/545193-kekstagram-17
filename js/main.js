@@ -103,22 +103,17 @@ var changeOverlay = function () {
   var checkedEffect = effectsFieldset.querySelector('input:checked');
   var filterValue;
   var pinLevel = document.querySelector('.effect-level__pin');
-  if (!checkedEffect) {
-    effectBar.classList.add('hidden');
-  } else if (checkedEffect) {
-    if (checkedEffect.value !== 'none') {
-      effectBar.classList.remove('hidden');
-    } else {
-      effectBar.classList.add('hidden');
-    }
-  }
+  effectBar.classList.remove('hidden');
   switch (checkedEffect.value) {
     case 'chrome': filterValue = 'grayscale(' + pinLevel.offsetLeft / EFFECT_LEVEL + ')'; break;
     case 'sepia': filterValue = 'sepia(' + pinLevel.offsetLeft / EFFECT_LEVEL + ')'; break;
     case 'marvin': filterValue = 'invert(' + pinLevel.offsetLeft + '%)'; break;
     case 'phobos': filterValue = 'blur(' + pinLevel.offsetLeft / EFFECT_LEVEL + 'px)'; break;
     case 'heat': filterValue = 'brightness(' + pinLevel.offsetLeft / EFFECT_LEVEL + ')'; break;
-    default: filterValue = 'none';
+    default: {
+      filterValue = 'none';
+      effectBar.classList.add('hidden');
+    }
   }
   previewPic.style.filter = filterValue;
 };
