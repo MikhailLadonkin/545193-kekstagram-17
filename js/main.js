@@ -22,7 +22,9 @@ var effectBar = document.querySelector('.img-upload__effect-level');
 var effectsFieldset = document.querySelector('.img-upload__effects');
 var commentField = document.querySelector('.text__description');
 var hashtagsField = document.querySelector('.text__hashtags');
-
+var pinLevel = document.querySelector('.effect-level__pin');
+var effectLevelLine = document.querySelector('.effect-level__line');
+var effectLevelDepth = document.querySelector('.effect-level__depth');
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
@@ -102,14 +104,13 @@ closeOverlay.addEventListener('click', function () {
 var changeOverlay = function () {
   var checkedEffect = effectsFieldset.querySelector('input:checked');
   var filterValue;
-  var pinLevel = document.querySelector('.effect-level__pin');
   effectBar.classList.remove('hidden');
   switch (checkedEffect.value) {
-    case 'chrome': filterValue = 'grayscale(' + pinLevel.offsetLeft / EFFECT_LEVEL + ')'; break;
-    case 'sepia': filterValue = 'sepia(' + pinLevel.offsetLeft / EFFECT_LEVEL + ')'; break;
-    case 'marvin': filterValue = 'invert(' + pinLevel.offsetLeft + '%)'; break;
-    case 'phobos': filterValue = 'blur(' + pinLevel.offsetLeft / EFFECT_LEVEL + 'px)'; break;
-    case 'heat': filterValue = 'brightness(' + pinLevel.offsetLeft / EFFECT_LEVEL + ')'; break;
+    case 'chrome': filterValue = 'grayscale(' + (parseInt(pinLevel.style.left, 10) / EFFECT_LEVEL) + ')'; break;
+    case 'sepia': filterValue = 'sepia(' + (parseInt(pinLevel.style.left, 10) / EFFECT_LEVEL) + ')'; break;
+    case 'marvin': filterValue = 'invert(' + (parseInt(pinLevel.style.left, 10) / 10) + '%)'; break;
+    case 'phobos': filterValue = 'blur(' + (parseInt(pinLevel.style.left, 10) / EFFECT_LEVEL) + 'px)'; break;
+    case 'heat': filterValue = 'brightness(' + (parseInt(pinLevel.style.left, 10) / EFFECT_LEVEL) + ')'; break;
     default: {
       filterValue = 'none';
       effectBar.classList.add('hidden');
@@ -127,6 +128,38 @@ var validateCommentLength = function () {
     commentField.setCustomValidity('');
   }
 };
+
+pinLevel.addEventListener('mousedown', function (evt) {
+  evt.preventDefault();
+
+  var startCoords = {
+    x: evt.clientX
+  };
+  var onMouseMove = function (moveEvt) {
+    moveEvt.preventDefault();
+    var shift = {
+      x: startCoords.x - moveEvt.clientX
+    };
+    startCoords = {
+      x: moveEvt.clientX
+    };
+    if (startCoords.x >= effectLevelLine.getBoundingClientRect().left &&
+     startCoords.x <= effectLevelLine.getBoundingClientRect().right) {
+      pinLevel.style.left = (pinLevel.offsetLeft - shift.x) + 'px';
+      effectLevelDepth.style.width = (parseInt(pinLevel.style.left, 10) / parseInt(getComputedStyle(effectLevelLine).width, 10) * 100) + '%';
+    }
+  };
+  var onMouseUp = function (upEvt) {
+    startCoords = {
+      x: upEvt.clientX
+    };
+    upEvt.preventDefault();
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+  };
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp);
+});
 
 var photos = generateData(25);
 renderPhotos(photos);
