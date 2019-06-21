@@ -116,6 +116,12 @@ var changeOverlay = function () {
       effectBar.classList.add('hidden');
     }
   }
+  effectsFieldset.addEventListener('change', function () {
+    if (checkedEffect) {
+      pinLevel.style.left = effectLevelLine.getBoundingClientRect().width + 'px';
+      effectLevelDepth.style.width = (parseInt(pinLevel.style.left, 10) / parseInt(getComputedStyle(effectLevelLine).width, 10) * 100) + '%';
+    }
+  });
   previewPic.style.filter = filterValue;
 };
 
@@ -131,7 +137,6 @@ var validateCommentLength = function () {
 
 pinLevel.addEventListener('mousedown', function (evt) {
   evt.preventDefault();
-
   var startCoords = {
     x: evt.clientX
   };
@@ -147,6 +152,7 @@ pinLevel.addEventListener('mousedown', function (evt) {
      startCoords.x <= effectLevelLine.getBoundingClientRect().right) {
       pinLevel.style.left = (pinLevel.offsetLeft - shift.x) + 'px';
       effectLevelDepth.style.width = (parseInt(pinLevel.style.left, 10) / parseInt(getComputedStyle(effectLevelLine).width, 10) * 100) + '%';
+      effectsFieldset.addEventListener('change', changeOverlay());
     }
   };
   var onMouseUp = function (upEvt) {
