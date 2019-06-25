@@ -131,17 +131,19 @@ var changeOverlay = function (percentage) {
 };
 pinLevel.addEventListener('mousedown', function (evt) {
   evt.preventDefault();
+  var startX = evt.clientX;
+  var startLevelDepthWidth = effectLevelDepth.offsetWidth;
+  var clickedPercentageLevel = startLevelDepthWidth / effectLevelLine.offsetWidth * 100;
+  changeOverlay(clickedPercentageLevel);
   var onMouseMove = function (moveEvt) {
     moveEvt.preventDefault();
-    var effectTotalWidth = effectLevelLine.offsetWidth;
-    var effectLevelStart = effectLevelLine.getBoundingClientRect().right;
-    var shift = effectTotalWidth - (effectLevelStart - moveEvt.clientX);
-    var percentageLevel = shift / effectTotalWidth * 100;
-    if (shift > 0 && shift < effectTotalWidth) {
-      pinLevel.style.left = percentageLevel + '%';
-      effectLevelDepth.style.width = percentageLevel + '%';
-      changeOverlay(percentageLevel);
-    }
+    var shift = moveEvt.clientX - startX;
+    var levelWidth = startLevelDepthWidth + shift;
+    var movedPercentageLevel = levelWidth / effectLevelLine.offsetWidth * 100;
+    movedPercentageLevel = Math.max(0, movedPercentageLevel);
+    movedPercentageLevel = Math.min(100, movedPercentageLevel);
+
+    changeOverlay(movedPercentageLevel);
   };
   var onMouseUp = function (upEvt) {
     upEvt.preventDefault();
@@ -152,11 +154,9 @@ pinLevel.addEventListener('mousedown', function (evt) {
   document.addEventListener('mouseup', onMouseUp);
 });
 
-effectsFieldset.addEventListener('click', changeOverlay);
 effectsFieldset.addEventListener('click', function () {
   changeOverlay(100);
 });
-
 commentField.addEventListener('change', validateCommentLength);
 var photos = generateData(25);
 renderPhotos(photos);
