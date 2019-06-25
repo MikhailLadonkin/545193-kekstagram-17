@@ -1,5 +1,6 @@
 'use strict';
 
+var ESC_KEYCODE = 27;
 var COMMENTS_LIST = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -9,24 +10,22 @@ var COMMENTS_LIST = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
 var NAMES_LIST = ['Sam', 'Jack', 'Clive', 'Mathew', 'Alex', 'Karl'];
-var EFFECT_LEVEL = 100;
-var ESC_KEYCODE = 27;
-
 var template = document.querySelector('#picture').content.querySelector('a');
 var picturesDomElement = document.querySelector('.pictures');
-var uploadPicLabel = document.querySelector('#upload-file');
-var uploadOverlay = document.querySelector('.img-upload__overlay');
-var closeOverlay = document.querySelector('.img-upload__cancel');
+var pinLevel = document.querySelector('.effect-level__pin');
+var effectLevelLine = document.querySelector('.effect-level__line');
+var effectLevelDepth = document.querySelector('.effect-level__depth');
 var previewPic = document.querySelector('.img-upload__preview');
 var effectBar = document.querySelector('.img-upload__effect-level');
 var effectsFieldset = document.querySelector('.img-upload__effects');
-var commentField = document.querySelector('.text__description');
+var uploadPicLabel = document.querySelector('#upload-file');
+var uploadOverlay = document.querySelector('.img-upload__overlay');
+var closeOverlay = document.querySelector('.img-upload__cancel');
 var hashtagsField = document.querySelector('.text__hashtags');
 
-
-function getRandomInt(min, max) {
+var getRandomInt = function (min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
-}
+};
 
 var getRandomCommentator = function () {
   var randomCommentator = {};
@@ -74,12 +73,6 @@ var renderPhotos = function (array) {
   picturesDomElement.appendChild(fragment);
 };
 
-var onPopupEscPress = function (evt) {
-  if (evt.keyCode === ESC_KEYCODE && document.activeElement !== commentField && document.activeElement !== hashtagsField) {
-    closePicEditor();
-  }
-};
-
 var openPicEditor = function () {
   uploadOverlay.classList.remove('hidden');
   document.addEventListener('keydown', onPopupEscPress);
@@ -99,27 +92,16 @@ closeOverlay.addEventListener('click', function () {
   closePicEditor();
 });
 
-var changeOverlay = function () {
-  var checkedEffect = effectsFieldset.querySelector('input:checked');
-  var filterValue;
-  var pinLevel = document.querySelector('.effect-level__pin');
-  effectBar.classList.remove('hidden');
-  switch (checkedEffect.value) {
-    case 'chrome': filterValue = 'grayscale(' + pinLevel.offsetLeft / EFFECT_LEVEL + ')'; break;
-    case 'sepia': filterValue = 'sepia(' + pinLevel.offsetLeft / EFFECT_LEVEL + ')'; break;
-    case 'marvin': filterValue = 'invert(' + pinLevel.offsetLeft + '%)'; break;
-    case 'phobos': filterValue = 'blur(' + pinLevel.offsetLeft / EFFECT_LEVEL + 'px)'; break;
-    case 'heat': filterValue = 'brightness(' + pinLevel.offsetLeft / EFFECT_LEVEL + ')'; break;
-    default: {
-      filterValue = 'none';
-      effectBar.classList.add('hidden');
-    }
+var onPopupEscPress = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE && document.activeElement !== commentField && document.activeElement !== hashtagsField) {
+    closePicEditor();
   }
-  previewPic.style.filter = filterValue;
 };
 
+var commentField = document.querySelector('.text__description');
 var validateCommentLength = function () {
-  if (commentField.value.length > 140) {
+  var MAX_LENGTH = 140;
+  if (commentField.value.length > MAX_LENGTH) {
     commentField.style.border = 'thick solid red';
     commentField.setCustomValidity('The message is too long');
   } else {
@@ -128,7 +110,54 @@ var validateCommentLength = function () {
   }
 };
 
+var changeOverlay = function (percentage) {
+  var checkedEffect = effectsFieldset.querySelector('input:checked');
+  var filterValue;
+  effectBar.classList.remove('hidden');
+  switch (checkedEffect.value) {
+    case 'chrome': filterValue = 'grayscale(' + percentage / 100 + ')'; break;
+    case 'sepia': filterValue = 'sepia(' + percentage / 100 + ')'; break;
+    case 'marvin': filterValue = 'invert(' + percentage + '%)'; break;
+    case 'phobos': filterValue = 'blur(' + percentage / 100 * 3 + 'px)'; break;
+    case 'heat': filterValue = 'brightness(' + percentage / 100 * 3 + ')'; break;
+    default: {
+      filterValue = 'none';
+      effectBar.classList.add('hidden');
+    }
+  }
+  previewPic.style.filter = filterValue;
+  pinLevel.style.left = percentage + '%';
+  effectLevelDepth.style.width = percentage + '%';
+};
+pinLevel.addEventListener('mousedown', function (evt) {
+  evt.preventDefault();
+  var startX = evt.clientX;
+  var startLevelDepthWidth = effectLevelDepth.offsetWidth;
+  var clickedPercentageLevel = startLevelDepthWidth / effectLevelLine.offsetWidth * 100;
+  changeOverlay(clickedPercentageLevel);
+  var onMouseMove = function (moveEvt) {
+    moveEvt.preventDefault();
+    var shift = moveEvt.clientX - startX;
+    var levelWidth = startLevelDepthWidth + shift;
+    var movedPercentageLevel = levelWidth / effectLevelLine.offsetWidth * 100;
+    movedPercentageLevel = Math.max(0, movedPercentageLevel);
+    movedPercentageLevel = Math.min(100, movedPercentageLevel);
+
+    changeOverlay(movedPercentageLevel);
+  };
+  var onMouseUp = function (upEvt) {
+    upEvt.preventDefault();
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+  };
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp);
+});
+
+effectsFieldset.addEventListener('click', function () {
+  changeOverlay(100);
+});
+commentField.addEventListener('change', validateCommentLength);
 var photos = generateData(25);
 renderPhotos(photos);
-effectsFieldset.addEventListener('change', changeOverlay);
-commentField.addEventListener('change', validateCommentLength);
+
