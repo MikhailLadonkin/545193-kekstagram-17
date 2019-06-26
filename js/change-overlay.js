@@ -7,7 +7,7 @@
   var previewPic = document.querySelector('.img-upload__preview');
   var effectBar = document.querySelector('.img-upload__effect-level');
   var effectsFieldset = document.querySelector('.img-upload__effects');
-  window.changeOverlay = function (percentage) {
+  var changeOverlay = function (percentage) {
     var checkedEffect = effectsFieldset.querySelector('input:checked');
     var filterValue;
     effectBar.classList.remove('hidden');
@@ -31,7 +31,7 @@
     var startX = evt.clientX;
     var startLevelDepthWidth = effectLevelDepth.offsetWidth;
     var clickedPercentageLevel = startLevelDepthWidth / effectLevelLine.offsetWidth * 100;
-    window.changeOverlay(clickedPercentageLevel);
+    changeOverlay(clickedPercentageLevel);
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
       var shift = moveEvt.clientX - startX;
@@ -40,7 +40,7 @@
       movedPercentageLevel = Math.max(0, movedPercentageLevel);
       movedPercentageLevel = Math.min(100, movedPercentageLevel);
 
-      window.changeOverlay(movedPercentageLevel);
+      changeOverlay(movedPercentageLevel);
     };
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
@@ -52,6 +52,7 @@
   });
 
   effectsFieldset.addEventListener('click', function () {
-    window.changeOverlay(100);
+    changeOverlay(100);
   });
+  window.changeOverlay = changeOverlay;
 })();

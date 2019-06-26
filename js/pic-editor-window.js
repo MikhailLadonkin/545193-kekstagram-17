@@ -5,10 +5,11 @@
   var uploadOverlay = document.querySelector('.img-upload__overlay');
   var closeOverlay = document.querySelector('.img-upload__cancel');
   var hashtagsField = document.querySelector('.text__hashtags');
+  var commentField = document.querySelector('.text__description');
 
 
   var onPopupEscPress = function (evt) {
-    if (evt.keyCode === window.util.ESC_KEYCODE && document.activeElement !== window.commentField.element && document.activeElement !== hashtagsField) {
+    if (evt.keyCode === window.util.ESC_KEYCODE && document.activeElement !== commentField && document.activeElement !== hashtagsField) {
       closePicEditor();
     }
   };
