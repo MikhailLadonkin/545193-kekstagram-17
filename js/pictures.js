@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-
   var template = document.querySelector('#picture').content.querySelector('a');
   var picturesDomElement = document.querySelector('.pictures');
 
@@ -21,8 +20,8 @@
     picturesDomElement.appendChild(fragment);
   };
 
-  var successHandler = function () {
-    renderPhotos();
+  var successHandler = function (items) {
+    renderPhotos(items);
   };
 
   var errorHandler = function (errorMessage) {
