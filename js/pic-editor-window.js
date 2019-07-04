@@ -6,6 +6,39 @@
   var closeOverlay = document.querySelector('.img-upload__cancel');
   var hashtagsField = document.querySelector('.text__hashtags');
   var commentField = document.querySelector('.text__description');
+  var zoomInPic = document.querySelector('.scale__control--bigger');
+  var zoomOutPic = document.querySelector('.scale__control--smaller');
+  var zoomValue = document.querySelector('.scale__control--value');
+  var previewPic = document.querySelector('.img-upload__preview');
+  var MAX_SCALE = 100;
+  var MIN_SCALE = 0;
+  var STEP_SCALE = 25;
+
+  var scaleUp = function () {
+    if (parseInt(zoomValue.value, 10) < MAX_SCALE && parseInt(zoomValue.value, 10) >= MIN_SCALE) {
+      var value;
+      value = parseInt(zoomValue.value, 10) + STEP_SCALE;
+      zoomValue.value = value + '%';
+      previewPic.style.transform = 'scale(' + value / 100 + ')';
+    }
+  };
+
+  var scaleOut = function () {
+    if (parseInt(zoomValue.value, 10) > MIN_SCALE && parseInt(zoomValue.value, 10) <= MAX_SCALE) {
+      var value;
+      value = parseInt(zoomValue.value, 10) - STEP_SCALE;
+      zoomValue.value = value + '%';
+      previewPic.style.transform = 'scale(' + value / 100 + ')';
+    }
+  };
+
+
+  var changeZoom = function (value) {
+    zoomValue.value = value + '%';
+    previewPic.style.transform = 'scale(' + value / 100 + ')';
+    zoomInPic.addEventListener('click', scaleUp);
+    zoomOutPic.addEventListener('click', scaleOut);
+  };
 
 
   var onPopupEscPress = function (evt) {
@@ -17,6 +50,7 @@
   var openPicEditor = function () {
     uploadOverlay.classList.remove('hidden');
     document.addEventListener('keydown', onPopupEscPress);
+    changeZoom(100);
   };
 
   var closePicEditor = function () {
