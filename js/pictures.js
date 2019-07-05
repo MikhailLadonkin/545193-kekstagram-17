@@ -6,20 +6,6 @@
   var filtersForm = document.querySelector('.img-filters__form');
   var filtersBlock = document.querySelector('.img-filters');
   var data = [];
-  var DEBOUNCE_INTERVAL = 300;
-  var debounce = function (cb) {
-    var lastTimeout = null;
-
-    return function () {
-      var parameters = arguments;
-      if (lastTimeout) {
-        window.clearTimeout(lastTimeout);
-      }
-      lastTimeout = window.setTimeout(function () {
-        cb.apply(null, parameters);
-      }, DEBOUNCE_INTERVAL);
-    };
-  };
 
   var renderPhoto = function (item) {
     var element = template.cloneNode(true);
@@ -57,29 +43,28 @@
     return sortedNew;
   };
 
-  var clearPictures = function () {
+  var clearPicturesHandler = function () {
     var addedPictures = picturesDomElement.querySelectorAll('.picture');
     addedPictures.forEach(function (picture) {
       picture.remove();
     });
   };
 
-  var sortPictures = debounce(function (evt) {
-    clearPictures();
-    for (var i = 0; i < filtersForm.length; i++) {
-      if (filtersForm[i].classList.contains('img-filters__button--active')) {
-        filtersForm[i].classList.remove('img-filters__button--active');
-      }
+  var sortPictures = window.util.debounce(function (evt) {
+    if (!evt.target.classList.contains('img-filters__button')) {
+      return;
     }
+    clearPicturesHandler();
+    filtersForm.querySelectorAll('.img-filters__button').forEach(function (element) {
+      element.classList.remove('img-filters__button--active');
+    });
+    evt.target.classList.add('img-filters__button--active');
     if (evt.target.id === 'filter-discussed') {
       renderPhotos(sortByComments(data));
-      evt.target.classList.add('img-filters__button--active');
     } else if (evt.target.id === 'filter-new') {
       renderPhotos(sortByDate(data));
-      evt.target.classList.add('img-filters__button--active');
     } else {
       renderPhotos(data);
-      evt.target.classList.add('img-filters__button--active');
     }
   });
 
