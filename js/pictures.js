@@ -7,12 +7,40 @@
   var filtersBlock = document.querySelector('.img-filters');
   var data = [];
 
+  var bigPicture = document.querySelector('.big-picture');
+  var cancelBigPicture = document.querySelector('.big-picture__cancel');
+  var commentsCount = bigPicture.querySelector('.comments-count');
+  var likesCount = bigPicture.querySelector('.likes-count');
+
   var renderPhoto = function (item) {
     var element = template.cloneNode(true);
     element.querySelector('.picture__comments').textContent = item.comments.length;
     element.querySelector('.picture__likes').textContent = item.likes;
     element.querySelector('.picture__img').src = item.url;
+    element.addEventListener('click', function (evt) {
+      bigPicture.classList.remove('hidden');
+      document.body.classList.add('modal-open');
+      if (evt.target.classList.contains('picture__img')) {
+        bigPicture.classList.remove('hidden');
+        document.body.classList.add('modal-open');
+        bigPicture.querySelector('img').src = item.url;
+        commentsCount.innerHTML = item.comments.length;
+        likesCount.innerHTML = item.likes;
+      }
+    });
     return element;
+  };
+  var renderComments = function (item) {
+    var element = document.querySelector('.social__comment').cloneNode(true);
+    var fragment = document.createDocumentFragment();
+    for (var k = 0; k < item.length; k++) {
+      for (var i = 0; i < item[k].comments.length; i++) {
+        element.querySelector('.social__picture').src = item[k].comments[i].avatar;
+        element.querySelector('.social__text').textContent = item.comments[i].message;
+        fragment.appendChild(element);
+      }
+    }
+    document.querySelector('.social__comments').appendChild(fragment);
   };
 
   var renderPhotos = function (items) {
@@ -68,9 +96,23 @@
     }
   });
 
+  var closeBigPicture = function () {
+    bigPicture.classList.add('hidden');
+    document.removeEventListener('keydown', onBigPicEscPress);
+  };
+
+  var onBigPicEscPress = function (evt) {
+    if (evt.keyCode === window.util.ESC_KEYCODE) {
+      closeBigPicture();
+    }
+  };
+
+  cancelBigPicture.addEventListener('click', closeBigPicture);
+
   var successHandler = function (items) {
     data = items;
     renderPhotos(data);
+    renderComments(data);
     filtersBlock.classList.remove('img-filters--inactive');
     filtersForm.addEventListener('click', sortPictures);
   };
