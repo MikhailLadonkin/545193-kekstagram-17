@@ -13,6 +13,7 @@
     for (var i = 0; i < item.comments.length; i++) {
       element.querySelector('.social__picture').src = item.comments[i].avatar;
       element.querySelector('.social__text').textContent = item.comments[i].message;
+      element.querySelector('.social__comment-count').textContent = commentsNumber;
     }
     return element;
   };
