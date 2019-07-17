@@ -12,6 +12,11 @@
     element.querySelector('.picture__comments').textContent = item.comments.length;
     element.querySelector('.picture__likes').textContent = item.likes;
     element.querySelector('.picture__img').src = item.url;
+    element.addEventListener('click', function (evt) {
+      if (evt.target.classList.contains('picture__img')) {
+        window.bigPicture.show(item);
+      }
+    });
     return element;
   };
 
@@ -85,5 +90,6 @@
     node.textContent = errorMessage;
     document.body.insertAdjacentElement('afterbegin', node);
   };
+
   window.load(successHandler, errorHandler);
 })();
