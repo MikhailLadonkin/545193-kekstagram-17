@@ -17,7 +17,7 @@
       case 'sepia': filterValue = 'sepia(' + percentage / 100 + ')'; break;
       case 'marvin': filterValue = 'invert(' + percentage + '%)'; break;
       case 'phobos': filterValue = 'blur(' + percentage / 100 * 3 + 'px)'; break;
-      case 'heat': filterValue = 'brightness(' + percentage / 100 * 3 + ')'; break;
+      case 'heat': filterValue = 'brightness(' + (percentage / 50 + 1) + ')'; break;
       default: {
         filterValue = 'none';
         effectBar.classList.add('hidden');
