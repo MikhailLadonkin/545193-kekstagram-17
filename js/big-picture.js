@@ -34,7 +34,7 @@
     shownCommentsNumber.innerHTML = lastIndex;
     currentIndex += COMMENTS_NUMBER;
     lastIndex += COMMENTS_NUMBER;
-    if (currentIndex > comments.length) {
+    if (currentIndex > comments.length - 1) {
       loadCommentsButton.classList.add('hidden');
       shownCommentsNumber.innerHTML = comments.length;
     }

@@ -1,8 +1,6 @@
 'use strict';
 
 (function () {
-  var templateSuccess = document.querySelector('#success').content.querySelector('div');
-  var templateError = document.querySelector('#error').content.querySelector('div');
   var uploadPicLabel = document.querySelector('#upload-file');
   var uploadOverlay = document.querySelector('.img-upload__overlay');
   var closeOverlay = document.querySelector('.img-upload__cancel');
@@ -61,58 +59,14 @@
     document.removeEventListener('keydown', onPopupEscPress);
   };
 
-  var closeMessage = function (item) {
-    item.remove();
-    document.removeEventListener('keydown', onMessageEscPress);
-    document.removeEventListener('click', onDocClickClose);
-  };
-
-  var onMessageEscPress = function (evt) {
-    evt.preventDefault();
-    if (evt.keyCode === window.util.ESC_KEYCODE) {
-      closeMessage();
-    }
-  };
-
-  var successMessage = function () {
-    var element = templateSuccess.cloneNode(true);
-    element.querySelector('.success__title').textContent = 'The pic has been successfully uploaded';
-    element.querySelector('.success__button').textContent = 'Awesome';
-    document.querySelector('main').appendChild(element);
-    element.querySelector('.success__button').addEventListener('click', function () {
-      element.remove();
-    });
-    closeMessage(element);
-    document.addEventListener('click', onDocClickClose);
-  };
-
-  var onDocClickClose = function (element) {
-    closeMessage(element);
-  };
-
-  var errorMessage = function () {
-    var element = templateError.cloneNode(true);
-    element.querySelector('.error__title').textContent = 'Oops! Something went wrong!';
-    element.querySelector('.error__button:nth-child(1)').textContent = 'Please try again';
-    element.querySelector('.error__button:nth-child(2)').textContent = 'Choose another file';
-    document.querySelector('main').appendChild(element);
-    element.querySelectorAll('.error__button').forEach(function (item) {
-      item.addEventListener('click', function () {
-        element.remove();
-      });
-    });
-    closeMessage(element);
-    document.addEventListener('click', onDocClickClose);
-  };
-
   var onSuccessHandler = function () {
     imgUploadForm.classList.add('hidden');
-    successMessage();
+    window.message.success();
   };
 
   var onErrorHandler = function () {
     imgUploadForm.classList.add('hidden');
-    errorMessage();
+    window.message.error();
   };
 
   var uploadPic = function (evt) {
