@@ -60,13 +60,13 @@
   };
 
   var onSuccessHandler = function () {
-    imgUploadForm.classList.add('hidden');
-    window.message.success();
+    closePicEditor();
+    window.message.showOnSuccess();
   };
 
   var onErrorHandler = function () {
-    imgUploadForm.classList.add('hidden');
-    window.message.error();
+    closePicEditor();
+    window.message.showOnError();
   };
 
   var uploadPic = function (evt) {
