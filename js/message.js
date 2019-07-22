@@ -1,73 +1,63 @@
 'use strict';
 
 (function () {
-  var templateSuccess = document.querySelector('#success').content.querySelector('div');
-  var templateError = document.querySelector('#error').content.querySelector('div');
+  var templateSuccess = document.querySelector('#success').content.querySelector('.success');
+  var templateError = document.querySelector('#error').content.querySelector('.error');
+  var mainElement = document.querySelector('main');
 
-  var closeSuccessMessage = function () {
-    document.querySelector('.success__inner').remove();
-  };
-  var closeErrorMessage = function () {
-    document.querySelector('.error__inner').remove();
-  };
-
-  var closeMessage = function () {
-    if (document.querySelector('.success__inner')) {
-      closeSuccessMessage();
-    } else if (document.querySelector('.error__inner')) {
-      closeErrorMessage();
+  var close = function () {
+    var messageElement = mainElement.querySelector('.success, .error');
+    if (messageElement) {
+      messageElement.remove();
+      document.removeEventListener('keydown', onDocumentKeydown);
+      document.removeEventListener('click', onDocumentClick);
     }
-    document.removeEventListener('keydown', onMessageEscPress);
-    document.removeEventListener('click', onDocClickClose);
   };
 
-  var onMessageEscPress = function (evt) {
-    evt.preventDefault();
+  var onDocumentKeydown = function (evt) {
     if (evt.keyCode === window.util.ESC_KEYCODE) {
-      closeMessage();
+      close();
     }
   };
 
-  var onDocClickClose = function (evt) {
-    if (document.querySelector('.success__inner')) {
-      if (!document.querySelector('.success__inner').contains(evt.target)) {
-        closeMessage();
-      }
-    } else if (document.querySelector('.error__inner')) {
-      if (!document.querySelector('.error__inner').contains(evt.target)) {
-        closeMessage();
-      }
+  var onDocumentClick = function (evt) {
+    if (!document.querySelector('.success__inner, .error__inner').contains(evt.target)) {
+      close();
     }
   };
 
-  var showSuccessMessage = function () {
+  var showSuccess = function () {
     var element = templateSuccess.cloneNode(true);
     element.querySelector('.success__title').textContent = 'The pic has been successfully uploaded';
     element.querySelector('.success__button').textContent = 'Awesome';
-    document.querySelector('main').appendChild(element);
-    element.querySelector('.success__button').addEventListener('click', function () {
-      closeMessage();
+    element.querySelector('.success__button').addEventListener('click', function (evt) {
+      evt.stopPropagation();
+      close();
     });
-    document.addEventListener('keydown', onMessageEscPress);
-    document.addEventListener('click', onDocClickClose);
+    mainElement.appendChild(element);
+    document.addEventListener('keydown', onDocumentKeydown);
+    document.addEventListener('click', onDocumentClick);
   };
 
-  var showErrorMessage = function () {
+  var showError = function () {
     var element = templateError.cloneNode(true);
     element.querySelector('.error__title').textContent = 'Oops! Something went wrong!';
     element.querySelector('.error__button:nth-child(1)').textContent = 'Please try again';
     element.querySelector('.error__button:nth-child(2)').textContent = 'Choose another file';
-    document.querySelector('main').appendChild(element);
     element.querySelectorAll('.error__button').forEach(function (item) {
-      item.addEventListener('click', function () {
-        closeMessage();
+      item.addEventListener('click', function (evt) {
+        evt.stopPropagation();
+        close();
       });
     });
-    document.addEventListener('keydown', onMessageEscPress);
-    document.addEventListener('click', onDocClickClose);
+
+    mainElement.appendChild(element);
+    document.addEventListener('keydown', onDocumentKeydown);
+    document.addEventListener('click', onDocumentClick);
   };
+
   window.message = {
-    showOnSuccess: showSuccessMessage,
-    showOnError: showErrorMessage
+    showSuccess: showSuccess,
+    showError: showError
   };
 })();
