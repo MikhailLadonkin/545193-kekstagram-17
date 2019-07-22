@@ -10,14 +10,17 @@
 
   var changeOverlay = function (percentage) {
     var checkedEffect = effectsFieldset.querySelector('input:checked');
+    var EFFECT_LEVEL_COUNT = percentage / 100;
+    var PHOBOS_EFFECT_COUNT = percentage / 100 * 3;
+    var HEAT_EFFECT_COUNT = percentage / 50 + 1;
     var filterValue;
     effectBar.classList.remove('hidden');
     switch (checkedEffect.value) {
-      case 'chrome': filterValue = 'grayscale(' + percentage / 100 + ')'; break;
-      case 'sepia': filterValue = 'sepia(' + percentage / 100 + ')'; break;
+      case 'chrome': filterValue = 'grayscale(' + EFFECT_LEVEL_COUNT + ')'; break;
+      case 'sepia': filterValue = 'sepia(' + EFFECT_LEVEL_COUNT + ')'; break;
       case 'marvin': filterValue = 'invert(' + percentage + '%)'; break;
-      case 'phobos': filterValue = 'blur(' + percentage / 100 * 3 + 'px)'; break;
-      case 'heat': filterValue = 'brightness(' + percentage / 100 * 3 + ')'; break;
+      case 'phobos': filterValue = 'blur(' + PHOBOS_EFFECT_COUNT + 'px)'; break;
+      case 'heat': filterValue = 'brightness(' + HEAT_EFFECT_COUNT + ')'; break;
       default: {
         filterValue = 'none';
         effectBar.classList.add('hidden');

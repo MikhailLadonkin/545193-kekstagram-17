@@ -10,6 +10,7 @@
   var zoomOutPic = document.querySelector('.scale__control--smaller');
   var zoomValue = document.querySelector('.scale__control--value');
   var previewPic = document.querySelector('.img-upload__preview');
+  var imgUploadForm = document.querySelector('.img-upload__form');
   var MAX_SCALE = 100;
   var MIN_SCALE = 0;
   var STEP_SCALE = 25;
@@ -57,6 +58,23 @@
     uploadOverlay.classList.add('hidden');
     document.removeEventListener('keydown', onPopupEscPress);
   };
+
+  var onSuccessHandler = function () {
+    closePicEditor();
+    window.message.showSuccess();
+  };
+
+  var onErrorHandler = function () {
+    closePicEditor();
+    window.message.showError();
+  };
+
+  var uploadPic = function (evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
+    window.upload(new FormData(imgUploadForm), onSuccessHandler, onErrorHandler);
+  };
+  imgUploadForm.addEventListener('submit', uploadPic);
 
   uploadPicLabel.addEventListener('change', function () {
     openPicEditor();
