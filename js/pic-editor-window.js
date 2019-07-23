@@ -62,11 +62,13 @@
   var onSuccessHandler = function () {
     closePicEditor();
     window.message.showSuccess();
+    imgUploadForm.reset();
   };
 
   var onErrorHandler = function () {
     closePicEditor();
     window.message.showError();
+    imgUploadForm.reset();
   };
 
   var uploadPic = function (evt) {

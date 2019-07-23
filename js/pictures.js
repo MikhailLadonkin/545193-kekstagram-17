@@ -31,7 +31,7 @@
   var sortByComments = function (array) {
     var sortedByComments = array.slice().sort(function (a, b) {
       return b.comments.length - a.comments.length;
-    }).slice(0, 9);
+    });
     return sortedByComments;
   };
 
@@ -45,7 +45,7 @@
       sortedNew[j] = sortedNew[i];
       sortedNew[i] = temp;
     }
-    return sortedNew;
+    return sortedNew.slice(0, 10);
   };
 
   var clearPicturesHandler = function () {
