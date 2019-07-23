@@ -30,8 +30,6 @@
     return xhr;
   };
 
-  // var URL = 'data.json';
-
   window.upload = function (data, onSuccess, onError) {
     var xhr = createXHR(onSuccess, onError);
     xhr.open('POST', URL.upload);
