@@ -22,9 +22,9 @@
 
   var renderPhotos = function (items) {
     var fragment = document.createDocumentFragment();
-    for (var k = 0; k < items.length; k++) {
-      fragment.appendChild(renderPhoto(items[k]));
-    }
+    items.forEach(function (item) {
+      fragment.appendChild(renderPhoto(item));
+    });
     picturesDomElement.appendChild(fragment);
   };
 
@@ -91,5 +91,5 @@
     document.body.insertAdjacentElement('afterbegin', node);
   };
 
-  window.load(successHandler, errorHandler);
+  window.backend.load(successHandler, errorHandler);
 })();
