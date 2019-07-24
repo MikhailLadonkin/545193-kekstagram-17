@@ -1,10 +1,10 @@
 'use strict';
 
 (function () {
+  var COMMENTS_NUMBER = 5;
   var template = document.querySelector('#comment').content.querySelector('li');
   var commentsDomElement = document.querySelector('.social__comments');
   var loadCommentsButton = document.querySelector('.social__comments-loader');
-  var COMMENTS_NUMBER = 5;
   var lastIndex = 5;
   var currentIndex = 0;
   var comments = [];

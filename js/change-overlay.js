@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var DEFAULT = 20;
+  var MAX = 100;
   var pinLevel = document.querySelector('.effect-level__pin');
   var effectLevelLine = document.querySelector('.effect-level__line');
   var effectLevelDepth = document.querySelector('.effect-level__depth');
@@ -56,8 +58,13 @@
   });
 
   effectsFieldset.addEventListener('click', function () {
-    changeOverlay(100);
+    changeOverlay(MAX);
   });
 
-  window.changeOverlay = changeOverlay;
+  window.changeOverlay = {
+    setEffect: changeOverlay,
+    clearEffect: function () {
+      changeOverlay(DEFAULT);
+    }
+  };
 })();

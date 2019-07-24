@@ -1,9 +1,9 @@
 'use strict';
 (function () {
 
-  var URL = {
-    load: 'https://js.dump.academy/kekstagram/data',
-    upload: 'https://js.dump.academy/kekstagram'
+  var Url = {
+    LOAD: 'https://js.dump.academy/kekstagram/data',
+    UPLOAD: 'https://js.dump.academy/kekstagram'
   };
 
   var createXHR = function (onSuccess, onError) {
@@ -30,14 +30,19 @@
     return xhr;
   };
 
-  window.upload = function (data, onSuccess, onError) {
+  var upload = function (data, onSuccess, onError) {
     var xhr = createXHR(onSuccess, onError);
-    xhr.open('POST', URL.upload);
+    xhr.open('POST', Url.UPLOAD);
     xhr.send(data);
   };
-  window.load = function (onSuccess, onError) {
+  var load = function (onSuccess, onError) {
     var xhr = createXHR(onSuccess, onError);
-    xhr.open('GET', URL.load);
+    xhr.open('GET', Url.LOAD);
     xhr.send();
+  };
+
+  window.backend = {
+    upload: upload,
+    load: load
   };
 })();
