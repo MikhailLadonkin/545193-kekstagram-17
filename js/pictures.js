@@ -29,10 +29,9 @@
   };
 
   var sortByComments = function (array) {
-    var sortedByComments = array.slice().sort(function (a, b) {
+    return array.slice().sort(function (a, b) {
       return b.comments.length - a.comments.length;
     });
-    return sortedByComments;
   };
 
   var sortByDate = function (arr) {
